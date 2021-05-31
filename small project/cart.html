@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="cart.css">
+    <title>WJ shopping!</title>
+</head>
+<body>
+  <header class="header">
+    <h1 class="header_title">
+      <a href="postman.html" class="header_link"><span class="visually_hidden">LOGO</span></a>
+    </h1>
+    <div class="sign_and_cart">
+      <a href="signin.html" class="signin_link"><div class="signin"><img src="user.png" class="signin_img" alt="sign in"><span class="visually_hidden">마이페이지</span></div></a>
+      <a href="cart.html" class="cart_link"><div class="cart"><img src="shopping-cart.png" class="cart_img" alt="cart"><span class="visually_hidden">장바구니</span></div></a>
+    </div>    
+  </header>
+
+  <main class="main">
+    <section class="order_info">
+      <div class="order_item_info">
+        <div class="info_title">
+          <h2 class="info_head orderInfo">■ 주문상품 정보 / 총 <span class="total"></span>개</h2>
+          <div class="info_allCheck">
+           <input type="checkbox" name="allCheck" class="check_all"><span class="allCheck_text">전체 선택</span>
+          </div>
+        </div>
+
+        <ul class="item_group"></ul>
+      </div>
+      
+      <div class="detail_wrap">
+        <div class="detail_box">
+          <div class="label_box">
+            <label>주문 상품 수</label>
+          </div>
+          <p class="price_unit"><span class="total_qty"></span>개</p>
+        </div>
+
+        <div class="detail_box">
+          <div class="label_box">
+            <label>총 주문금액</label>
+          </div>
+          <p class="price_unit"><span class="total_price_zone"></span>원</p>
+        </div>
+
+        <div class="detail_box">
+          <div class="label_box">
+            <label>배송비</label>
+          </div>
+          <p class="price_unit"><span class="delivery_charge_zone"></span>원</p>
+        </div>
+
+        <div class="detail_box">
+          <div class="label_box">
+            <label class="final_price">총 결제금액</label>
+          </div>
+          <p class="price_unit final"><span class="final_price_zone"></span>원</p>
+        </div>
+      </div>
+
+      <div class="order_check">
+      </div>
+
+      <button type="button" class="buy_btn">BUY NOW</button>
+    </section>
+
+  </main>
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="./jwt-decode.js"></script>
+  <script>
+    function goToBuySubmit(userId) {
+      console.log("userId:", userId);
+      location.href = `buy_submit.html`;
+    }
+
+    function calculateTotalAmount(cartItems) {
+      let totalAmount = 0;
+      for (let i=0; i < cartItems.length; i++) {
+        let $qty = cartItems[i].quantity;
+        let $prc = cartItems[i].variant_price;
+        let $last = $prc*$qty;
+        let item_qty = cartItems[i].quantity;
+        totalAmount += $prc*$qty;
+      }
+      return totalAmount;
+    }
+
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const [_, userId] = window.location.search.substring(1).split("=");
+    console.log("동작");
+
+    const accessToken = localStorage.getItem("access_token");
+      if (accessToken) {
+
+        const decoded = jwt_decode(accessToken);
+        const userId = decoded.user.id;
+        let sign_link = document.querySelector(".signin_link");
+        
+        console.log("decoded:", decoded)
+        
+        sign_link.setAttribute("href", "mypage.html");
+
+      let cartItems = [];
+      fetch(`http://localhost:8282/v1/me/cart`, {
+          method : "GET",
+          mode: "cors",
+          headers : {
+              'Content-Type': 'application/json',
+               Authorization : `Bearer ${accessToken}`
+          }
+      })
+      .then((response) => response.json())
+      .then(data => {
+        console.log("cart:", data);
+        console.log(data);
+        console.log(data.items.length);
+
+        cartItems = data.items;
+
+        totalQty.innerText = data.items.length;
+        totalQty2.innerText = data.items.length;
+            
+        const itemGroup = document.querySelector(".item_group");
+        let totalAmount = calculateTotalAmount(data.items);
+        
+        
+        for (let i=0; i < data.items.length; i++) {
+          itemGroup.innerHTML +=  generateCartItemHtml(data.items[i], i);
+        }
+        
+        finalPrice.innerHTML = totalAmount;
+        totalPrice.innerHTML = totalAmount;
+        
+        
+        let $plus = document.querySelectorAll(".plus");
+        let $minus = document.querySelectorAll(".minus");
+        let $listBuyBtn = document.querySelectorAll(".list_buy_btn");
+        let maxQty = 5;
+           
+          itemGroup.addEventListener('click', function(e) {
+            let target = e.target;
+            let targetVariantId = target.dataset.variantId;
+            let cartPrice = target.dataset.cartPrice;
+            let items_qty = document.querySelector(`.item_quantity[data-variant-id="${targetVariantId}"]`);
+            console.log("target:", target.dataset);
+
+            if(target.classList.contains('list_buy_btn')) {
+              console.log("구매버튼 클릭되었습니다.");
+              goToBuySubmit(userId);
+            }
+
+            if(target.classList.contains('plus')) {
+              console.log("플러스 버튼 클릭되었습니다.");
+              count('plus', items_qty, cartPrice);                
+            }
+
+            if(target.classList.contains('minus')) {
+              console.log("마이너스 버튼 클릭되었습니다.");
+              count('minus', items_qty, cartPrice);
+            }
+            
+            if(target.classList.contains('item_remove')) {
+              const cartItemId = target.dataset.cartItemId;
+              console.log("삭제 버튼 클릭되었습니다.");
+              itemRemove(target, cartItemId);
+            }
+
+          })
+
+
+          function toString(mileage) {
+            console.log("숫자콤마");
+            return mileage.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+          }
+
+
+          function itemRemove(target, cartItemId) {
+            fetch(`http://localhost:8282/v1/me/cart/items/${cartItemId}`, {
+                  method : "DELETE",
+                  headers : {
+                      'Content-Type': 'application/json',
+                      Authorization : `Bearer ${accessToken}`
+                  }
+              })
+              .then((response) => response.json())
+              .then(data => {
+                console.log("test:", data);
+                
+                let li = target.parentElement.parentElement;
+                console.log(li);
+                li.remove();
+
+                const cartItemId = Number(target.dataset.cartItemId);
+                cartItems = cartItems.filter((cartItem) => cartItem.id !== cartItemId);
+                calculateTotalAmount(cartItems);
+                console.log("다시",cartItems.length);
+                
+                totalQty.innerHTML = cartItems.length;
+                totalQty2.innerHTML = cartItems.length;
+                
+                console.log(calculateTotalAmount(cartItems));
+                
+                totalPrice.innerHTML = calculateTotalAmount(cartItems);
+                finalPrice.innerText = calculateTotalAmount(cartItems);
+                finalPrice.innerHTML = toString(Number(calculateTotalAmount(cartItems)));
+
+                if (Number(totalPrice.textContent) > 5000000) {
+                  localStorage.setItem("delivery_charge", "0");
+                  deliveryhChargeZone.innerHTML = localStorage.getItem("delivery_charge");
+                  finalPrice.innerHTML = Number(totalPrice.textContent)+Number(deliveryhChargeZone.textContent);
+                  console.log("배송비:", deliveryCharge);
+                } else {
+                  localStorage.setItem("delivery_charge", "3000");
+                  deliveryhChargeZone.innerHTML = localStorage.getItem("delivery_charge");
+                  finalPrice.innerHTML = Number(totalPrice.textContent)+Number(deliveryhChargeZone.textContent);
+                  finalPrice.innerHTML = toString(Number(finalPrice.textContent));
+                  console.log("배송비:", deliveryCharge);
+                }
+              })
+
+            }
+
+          
+              
+            // --- 배송비 ---
+            let deliveryhChargeZone = document.querySelector(".delivery_charge_zone");
+            let deliveryCharge = localStorage.getItem("delivery_charge");
+            
+            if (Number(totalPrice.textContent) > 5000000) {
+                localStorage.setItem("delivery_charge", "0");
+                deliveryhChargeZone.innerHTML = localStorage.getItem("delivery_charge");
+                finalPrice.innerHTML = Number(totalPrice.textContent)+Number(deliveryhChargeZone.textContent);
+                console.log("배송비:", deliveryCharge);
+              } else {
+                localStorage.setItem("delivery_charge", "3000");
+                deliveryhChargeZone.innerHTML = localStorage.getItem("delivery_charge");
+                finalPrice.innerHTML = Number(totalPrice.textContent)+Number(deliveryhChargeZone.textContent);
+                console.log("배송비:", deliveryCharge);
+              }
+
+
+
+            function count(type, target, prc) {
+              if(type === 'plus') {
+                target.value++;
+                // console.log("확인중입니다",target.dataset.cartPrice);
+                let variantId = Number(target.dataset.variantId);
+                // cartItems 에서 해당 variantId와 일치하는 carItem의 quantity target.value 값으로 만들기
+                // 배열의 findIndex를 사용해서 
+                let foundIndex = cartItems.findIndex((cartItem) => cartItem.variant_id === variantId);
+                if (foundIndex >= 0) {
+                  cartItems[foundIndex].quantity = target.value;
+                }
+                console.log("확인중입니다",target.value*prc);
+                console.log("확인중입니다 foundIndex",foundIndex);
+                console.log("확인중입니다 variantId",variantId);
+                console.log("확인중입니다 cartItems",cartItems);
+                // totalPrice.innerHTML = target.value*prc;
+
+                console.log(calculateTotalAmount(cartItems));
+                totalPrice.innerHTML = calculateTotalAmount(cartItems);
+                finalPrice.innerHTML = calculateTotalAmount(cartItems);
+                // toString(Number(finalPrice.textContent));
+               
+                if (Number(totalPrice.textContent) > 5000000) {
+                    localStorage.setItem("delivery_charge", "0");
+                    deliveryhChargeZone.innerHTML = localStorage.getItem("delivery_charge");
+                    finalPrice.innerHTML = Number(totalPrice.textContent)+Number(deliveryhChargeZone.textContent);
+                    finalPrice.innerHTML = toString(finalPrice.textContent);
+                    console.log("배송비:", deliveryCharge);
+                  } else {
+                    localStorage.setItem("delivery_charge", "3000");
+                    deliveryhChargeZone.innerHTML = localStorage.getItem("delivery_charge");
+                    finalPrice.innerHTML = Number(totalPrice.textContent)+Number(deliveryhChargeZone.textContent);
+                    finalPrice.innerHTML = toString(finalPrice.textContent);
+                    console.log("배송비:", deliveryCharge);
+                  }
+
+              } else if (type === 'minus') {
+                target.value = target.value-1;
+                
+                  if(target.value = 1) {
+                    target.disabled;
+                  }
+                
+                let variantId = Number(target.dataset.variantId);
+                let foundIndex = cartItems.findIndex((cartItem) => cartItem.variant_id === variantId);
+                if (foundIndex >= 0) {
+                  cartItems[foundIndex].quantity = target.value;
+                }
+                totalPrice.innerHTML = calculateTotalAmount(cartItems);
+                finalPrice.innerHTML = calculateTotalAmount(cartItems);
+                console.log("마이너스확인중", toString(Number(finalPrice.textContent)));
+                finalPrice.innerHTML = (Number(finalPrice.textContent));
+
+                if (Number(totalPrice.textContent) > 5000000) {
+                    localStorage.setItem("delivery_charge", "0");
+                    deliveryhChargeZone.innerHTML = localStorage.getItem("delivery_charge");
+                    finalPrice.innerHTML = Number(totalPrice.textContent)+Number(deliveryhChargeZone.textContent);
+                    finalPrice.innerHTML = toString(finalPrice.textContent);
+                    console.log("배송비:", deliveryCharge);
+                  } else {
+                    localStorage.setItem("delivery_charge", "3000");
+                    deliveryhChargeZone.innerHTML = localStorage.getItem("delivery_charge");
+                    finalPrice.innerHTML = Number(totalPrice.textContent)+Number(deliveryhChargeZone.textContent);
+                    finalPrice.innerHTML = toString(finalPrice.textContent);
+                    console.log("배송비:", deliveryCharge);
+                  }
+              }
+
+            }
+
+
+            // 체크박스
+            $(".check_all").click(function() {
+              if($(".check_all").prop("checked")) {
+                  $(".item input[type=checkbox]").prop("checked",true);
+                  let cnt = $("input:checkbox[name=item_checkbox]:checked").length;
+                  alert(cnt + "개 체크되었습니다.");
+                } else {
+                  $(".item input[type=checkbox]").prop("checked",false);
+                  alert("전부 해제되었습니다.");
+                }
+              });
+
+              $(".item_checkbox").on("click", function() {
+                var is_checked = true;
+
+                $(".item_checkbox").each(function(){
+                    is_checked = is_checked && $(this).is(":checked");
+                });
+                
+                $(".check_all").prop("checked", is_checked);
+              });
+
+
+
+            function generateCartItemHtml(cartItem, i) {
+                return `<li class="item">
+                        <div class="item_select">
+                          <input type="checkbox" name="item_checkbox" class="item_checkbox">
+                          <input type="button" value="삭제" class="item_remove ${[i]}" data-cart-item-id="${cartItem.id}">
+                        </div>
+                        
+                        <div class="info_wrap">
+                          <a class="info_box imgLink">
+                            <img class="item_img" alt="" src="${cartItem.product_image_src}">
+                          </a>
+                          <div class="info_box">
+                            <div class="brand_box">
+                              <p class="brand_name"></p>
+                            </div>
+                            <div class="info_text">
+                              <p class="goods name">${cartItem.product_name}</p>
+                            </div>
+                            
+                            <div class="info_text">
+                              <p class="price_area"><span class="price_zone">${toString(cartItem.variant_price)}</span>원</p>
+                            </div>
+                          
+                            
+                
+                            <div class="info_text">
+                              <p class="goods option">옵션 : <span class="option_zone">${cartItem.variant_name}</span></p>
+                            </div>
+                
+                            <div class="info_text priceAndQuantity">
+                              <div class="quantity_area">
+                                <input type="button" class="qty minus ${[i]}" data-variant-id="${cartItem.variant_id}"  value="-" name="count" data-cart-price="${cartItem.variant_price}">
+                                <input type="text" name="itemQty" class="item_quantity ${[i]}" data-variant-id="${cartItem.variant_id}" value="${cartItem.quantity}" data-counter="${cartItem.quantity}" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" data-counter>
+                                <input type="button" class="qty plus ${[i]}" data-variant-id="${cartItem.variant_id}" value="+" name="count" data-cart-price="${cartItem.variant_price}">
+                              </div>
+                              <button type="button" class="list_buy_btn ${[i]}">BUY NOW</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>`;
+              }
+      });
+    }
+        
+      const itemName = document.querySelector(".name");
+      const itemOption = document.querySelector(".option_zone");
+      const itemPrice = document.querySelector(".price_zone");
+      const itemQuantity = document.querySelector(".item_quantity");
+      const deliveryFee = document.querySelector(".delivery_charge_zone");
+      const totalPrice = document.querySelector(".total_price_zone");
+      const finalPrice = document.querySelector(".final_price_zone");
+      const totalQty = document.querySelector(".total");
+      const totalQty2 = document.querySelector(".total_qty");
+
+
+    // 구매하기 버튼 
+      const $buyBtn = document.querySelector(".buy_btn");
+      $buyBtn.addEventListener("click", () => {
+        console.log("큰 buy now 버튼 클릭");
+        checkCart(userId);
+      })
+
+
+      function checkCart() {
+        fetch(`http://localhost:8282/v1/me/cart`, {
+        method : "GET",
+        mode: "cors",
+        headers : {
+            'Content-Type': 'application/json',
+              Authorization : `Bearer ${accessToken}`
+            }
+        })
+        .then((response) => response.json())
+        .then(data => {
+          console.log("cart:", data);
+          console.log(data);
+        })
+
+        let countQty = document.querySelector(".item_quantity").value;
+        console.log(countQty);
+        
+        if (parseInt(countQty) === 0 || countQty === "") {
+          alert("수량은 1개 이상 선택 가능합니다.");
+          console.log(typeof countQty);
+          console.log(typeof parseInt(countQty));
+          console.log(parseInt(countQty) % 1);
+          document.querySelector(".item_quantity").value = 1;
+          return false;
+        } else if (!(Number(countQty) % 1 === 0)) {
+          alert("숫자만 입력해주세요.");
+          console.log(countQty % 1);
+          console.log(parseInt(countQty) % 1);
+          console.log(Number(countQty) % 1);
+          return false;
+        } else {
+          goToBuySubmit(userId);
+        }
+      }
+
+      
+      function countPrice() {
+        let number = document.querySelector(".item_quantity").value;
+        // let number = $itemQty.value;
+        let price = document.querySelector(".price_zone").textContent;
+        let totalPrice = document.getElementsByClassName("total_price_zone")[0];
+        let finalPrice = document.getElementsByClassName("final_price_zone")[0];
+
+        totalPrice.innerText = price*number;
+        finalPrice.innerText = price*number;
+        finalPrice.innerText = toString(Number(price*number));
+
+      }
+
+})
+
+</script>
+
+
+
+</body>
+</html>

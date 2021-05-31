@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="item_detail.css">
+    <title>WJ shopping!</title>
+</head>
+<body class="body">
+
+  <header class="header">
+    <!-- 로고 영역 -->
+    <h1 class="header_title">
+      <a href="postman.html" class="header_link"><span class="visually_hidden">LOGO</span></a>
+    </h1>
+
+    <div class="sign_and_cart">
+      <a href="signin.html" class="signin_link"><div class="signin"><img src="user.png" class="signin_img" alt="sign in"><span class="visually_hidden">마이페이지</span></div></a>
+      <a href="cart.html" class="cart_link"><div class="header_cart"><img src="shopping-cart.png" class="cart_img" alt="cart"><span class="visually_hidden">장바구니</span></div></a>
+    </div>
+
+    <!-- 메뉴 영역 -->
+    <!-- <nav class="header_nav" aria-label="header">
+      <ul class="nav_menu">
+        <a href="#" class="menu_link"><li class="menu_li"><span class="li_text">메뉴</span></li></a>
+        <a href="#" class="menu_link"><li class="menu_li"><span class="li_text">서비스</span></li></a>
+        <a href="#" class="menu_link"><li class="menu_li"><span class="li_text">컨텐츠</span></li></a>
+        <a href="#" class="menu_link"><li class="menu_li"><span class="li_text">커뮤니티</span></li></a>
+      </ul>
+    </nav> -->
+    
+  </header>
+
+  <main class="main">
+    
+        <div class="list_element">
+          <div class="image_wrap">
+            <img class="image" alt="" src="https://shopping-mall-api-lab.s3.ap-northeast-2.amazonaws.com/depositphotos_5098747-stock-photo-sweater.jpg">
+          </div>
+         
+          <div class="image_text_wrap" id="imageTextWrap">
+            <table class="list_table">
+              <colgroup>
+                <col class="col_width">
+                <col class="col_width">
+              </colgroup>
+              <thead>
+                <!-- <tr>
+                  <th class="thead_th" colspan="2" id="imageTextBrand"></th>
+                </tr> -->
+                <tr>
+                  <th class="thead_th" colspan="2" id="imageTextHead"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th class="tbody_th">Price</td>
+                  <td class="tbody_td"><span id="imageTextBody"></span>원</td>
+               </tr>
+               <tr>
+                 <th class="tbody_th">size</td>
+                 <td class="tbody_td">
+                   <select class="td_select">
+                     <option value="">- [필수] 옵션을 선택해주세요 -</option>
+                   </select>
+                 </td>
+               </tr>
+               <tr>
+                 <td></td>
+                 <td class="tbody_td">
+                   <div class="quantity_wrap">
+                     <input type="number" class="td_quantity" id="quantity" value="1">
+                   </div>
+                 </td>
+               </tr>
+              </tbody>
+            </table>
+            
+            <table class="list_btn_table">
+              <tbody>
+                <tr>
+                  <td class="btn_td">
+                    <input type="button" class="list_btn cart" value="장바구니">
+                  </td>
+                  <td class="btn_td">
+                    <input type="button" id="buyBtn" class="list_btn" value="구매하기">
+                  </td>  
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      
+  </main>
+
+  <div class="loading">
+    <img class="loading_image" src="Fading circles.gif" alt="Loading..." />
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="./jwt-decode.js"></script>
+  <script>
+
+     function goToBuySubmit(itemId) {
+      console.log("itemId:", itemId);
+      location.href = `buy_submit.html?item_id=${itemId}`;
+    }
+
+    function goToCart(itemId) {
+      console.log("itemId:", itemId);
+      location.href = `cart.html?item_id=${itemId}`;
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const [_, itemId] = window.location.search.substring(1).split("=");
+      console.log("페이지 테스트", itemId);
+      
+      const accessToken = localStorage.getItem("access_token");
+      if (accessToken) {
+
+        let sign_link = document.querySelector(".signin_link");
+
+        sign_link.setAttribute("href", "mypage.html");
+      }
+      
+
+      let variants;
+      fetch(`http://localhost:8282/v1/products/${itemId}`)
+        .then((response) => response.json())
+        // .then((data) => console.log(data[0]))
+        .then(data => {
+          console.log(data);
+         
+
+          const id = document.createElement("div");
+          const name = document.createElement("h3");
+          const price = document.createElement("p");
+         
+
+          id.textContent = data.id;
+          id.dataset.productId = data.id;
+          name.dataset.productId = data.name;
+          name.textContent = data.name;
+          price.textContent = data.variants[0].price;
+          
+          let selectBox = document.querySelector(".td_select");
+          selectBox.innerHTML += `<option value="${data.variants[0].name}" class="option">${data.variants[0].option1}</option>
+          <option value="${data.variants[1].name}" class="option">${data.variants[1].option1}</option>
+          <option value="${data.variants[2].name}" class="option">${data.variants[2].option1}</option>`;
+            
+
+          let first = document.getElementById("imageTextHead");
+          let second = document.getElementById("imageTextBody");
+          const third = document.querySelector(".td_select");
+
+          const image = document.querySelector(".image_wrap > img.image");
+          image.setAttribute("src", data.images[0].src);
+
+         name.classList.add("img_name");
+         price.classList.add("img_price");
+        
+        first.appendChild(name);
+        second.appendChild(price);
+
+        second.innerHTML = toString(Number(second.textContent));
+
+        variants = data.variants;
+
+        });
+
+
+        // --- 숫자 3자리 콤마 
+      function toString(mileage) {
+        console.log("숫자콤마");
+        return mileage.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      
+      const $buyBtn = document.getElementById("buyBtn");
+      const $cartBtn = document.querySelector(".cart");
+
+
+      // 장바구니 버튼
+      $cartBtn.addEventListener("click", () => {
+        console.log("장바구니 버튼 클릭");
+        
+      let select = document.querySelector(".td_select").value;
+      let itemQuantity = document.querySelector(".td_quantity").value;
+      let maxQuantity = 5;
+        
+        if (select === "") {
+          alert("옵션을 선택해주세요.");
+          return false;
+        }
+
+        if (itemQuantity < 1) {
+          alert("수량은 1개 이상 선택해야 합니다.");
+          return false;
+        } else if (itemQuantity > maxQuantity) {
+          alert("재고가 부족합니다.");
+          return false;
+        }
+
+        
+        let prc1 = document.getElementById("imageTextBody").textContent;
+        let qty1 = document.querySelector(".td_quantity").value;
+
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+          return false;
+        }
+
+        const decoded = jwt_decode(accessToken);
+        const userId = decoded.user.id;
+
+        const variantsFiltered = variants.filter((variant) => variant.option1 === select);
+        if (variantsFiltered.length === 0) {
+          return false;
+        }
+
+        const variantId = variantsFiltered[0].id;
+
+        fetch(`http://localhost:8282/v1/me/cart`, {
+          method : "PUT",
+          headers : {
+              'Content-Type': 'application/json',
+               Authorization : `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({
+            "items": [
+              {
+                "product_id": Number(itemId),
+                "variant_id": variantId,
+                "quantity": Number(itemQuantity)
+              }
+            ]
+          })
+         
+      })
+      .then((response) => response.json())
+      .then(data => {
+        console.log("test:", data);
+        console.log(data);
+        alert("장바구니에 상품이 담겼습니다.");
+        goToCart(itemId);
+      });
+
+    })
+
+
+      // 구매하기 버튼
+      $buyBtn.addEventListener("click", () => {
+        console.log("구매버튼 클릭");
+
+        let select = document.querySelector(".td_select").value;
+        let itemQuantity = document.querySelector(".td_quantity").value;
+        let maxQuantity = 5;
+        
+        if (select === "") {
+          alert("옵션을 선택해주세요.");
+          return false;
+        }
+         
+        if (itemQuantity < 1) {
+          alert("수량은 1개 이상 선택해야 합니다.");
+          return false;
+        } else if (itemQuantity > maxQuantity) {
+          alert("재고가 부족합니다.");
+          return false;
+        }
+
+
+      fetch(`http://localhost:8282/v1/products/${itemId}`)
+      // fetch("http://localhost:8282/v1/products")
+        .then((response) => response.json())
+        .then(data => {
+          console.log(data);
+          goToBuySubmit(itemId);
+      })
+
+
+        let prc1 = document.querySelector(".img_price").textContent;
+        let qty1 = document.querySelector(".td_quantity").value;
+
+        alert("장바구니에 상품이 담겼습니다.");
+        localStorage.setItem("item_name", document.querySelector(".thead_th > .img_name").textContent);
+        localStorage.setItem("item_price", document.querySelector(".img_price").textContent);
+        localStorage.setItem("item_option", document.querySelector(".td_select").value);
+        localStorage.setItem("item_quantity", document.querySelector(".td_quantity").value);
+        // localStorage.setItem("brand_name", document.querySelector(".thead_th > .img_brand").textContent);
+        localStorage.setItem("total_price", prc1*qty1);
+        localStorage.setItem("delivery_charge", "0");
+        localStorage.setItem("total_item_qty", "1");
+        localStorage.setItem("mileage", "2345");
+      })
+  
+  })
+
+  window.onload = async () => {
+
+      const $main = document.getElementsByClassName("main")[0];
+      $main.classList.add("hide");
+      let response = await fetch("http://localhost:8282/v1/products");
+
+        $main.classList.remove("hide");
+        document.querySelector(".loading").style.display = "none";
+
+  }
+
+
+  </script>
+</body>
+</html>
