@@ -5,53 +5,134 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
 body {
-	line-height: 1;
+  line-height: 1;
 }
-ol, ul {
-	list-style: none;
+ol,
+ul {
+  list-style: none;
 }
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+  quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
-
-html,body {
-  font-family: '나눔 고딕', NanumGothic, '돋움', Dotum, sans-serif;
+html,
+body {
+  font-family: "나눔 고딕", NanumGothic, "돋움", Dotum, sans-serif;
   width: 100%;
   height: 100%;
   margin: 0 auto;
@@ -78,7 +159,7 @@ html,body {
 
 .header::after {
   display: block;
-  content: '';
+  content: "";
   overflow: hidden;
   clear: both;
 }
@@ -98,7 +179,6 @@ html,body {
   justify-content: flex-end;
 }
 
-
 .search_link {
   display: inline-block;
   background: url("../img/search.png") no-repeat center;
@@ -115,7 +195,6 @@ html,body {
   font-size: 0;
 }
 
-
 .search_back {
   background: url("../img/free-icon-left-arrow-109618.png") no-repeat center;
   background-size: 80%;
@@ -124,7 +203,6 @@ html,body {
   border: none;
   padding: 0;
 }
-
 
 .search {
   display: flex;
@@ -173,7 +251,6 @@ input:-moz-placeholder {
   font-size: 12px;
 }
 
-
 .menu_link {
   text-decoration: none;
 }
@@ -198,8 +275,6 @@ input:-moz-placeholder {
   box-shadow: 0 3px 15px 3px rgba(0, 0, 0, 0.08);
 }
 
-
-
 /* gnb_menu */
 .gnb_menu {
   display: inline-block;
@@ -220,7 +295,8 @@ input:-moz-placeholder {
   background: #00ff0000;
 }
 
-.gnb_menu:before, .gnb_menu:after {
+.gnb_menu:before,
+.gnb_menu:after {
   display: block;
   content: "";
   position: absolute;
@@ -255,9 +331,7 @@ input:-moz-placeholder {
   transform: translateX(-50%) rotate(-45deg) translateZ(0);
 }
 
-
 /* =========== */
-
 
 .hidden {
   display: none;
@@ -266,7 +340,6 @@ input:-moz-placeholder {
 .hide {
   display: none;
 }
-
 
 .main {
   height: 100%;
@@ -277,10 +350,10 @@ input:-moz-placeholder {
 .login_fieldset {
   max-width: 400px;
   margin: 30px auto 10px;
-  background-color:#00ff0000;
+  background-color: #00ff0000;
 }
 
-.login_text {
+.login_input {
   width: calc(100% - 24px);
   height: 30px;
   padding: 10px;
@@ -296,6 +369,7 @@ input:-moz-placeholder {
   color: #fff;
   border-radius: 5px;
   margin-top: 5px;
+  cursor: pointer;
 }
 
 .main_find_information {
@@ -316,10 +390,6 @@ input:-moz-placeholder {
   text-decoration: none;
   color: #333;
 }
-
-
-
-
 
 .top_btn {
   position: fixed;
@@ -343,9 +413,6 @@ input:-moz-placeholder {
   text-decoration: none;
 }
 
-
-
-
 .footer {
   width: 100%;
   margin: 0 auto;
@@ -363,7 +430,7 @@ input:-moz-placeholder {
 .footer_menu:after {
   display: block;
   clear: both;
-  content: '';
+  content: "";
 }
 
 .footer_menu_list {
@@ -394,8 +461,6 @@ input:-moz-placeholder {
   font-weight: bold;
 }
 
-
-
 /* ----- 태블릿 ----- */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   .header {
@@ -411,7 +476,6 @@ input:-moz-placeholder {
     width: 60px;
     height: 60px;
   }
-
 
   .search {
     height: 60px;
@@ -441,15 +505,15 @@ input:-moz-placeholder {
   input::-webkit-input-placeholder {
     font-size: 14px;
   }
-  
+
   input::-moz-placeholder {
     font-size: 14px;
   }
-  
+
   input:-ms-input-placeholder {
     font-size: 14px;
   }
-  
+
   input:-moz-placeholder {
     font-size: 14px;
   }
@@ -462,9 +526,7 @@ input:-moz-placeholder {
     width: 500px;
     margin: 100px auto 20px;
   }
-  
 }
-
 
 /* ----- PC ----- */
 @media screen and (min-width: 1024px) {
@@ -518,23 +580,21 @@ input:-moz-placeholder {
     display: none;
   }
 
-
   input::-webkit-input-placeholder {
     font-size: 16px;
   }
-  
+
   input::-moz-placeholder {
     font-size: 16px;
   }
-  
+
   input:-ms-input-placeholder {
     font-size: 16px;
   }
-  
+
   input:-moz-placeholder {
     font-size: 16px;
   }
-
 
   .header_nav {
     display: inline-block;
@@ -553,7 +613,7 @@ input:-moz-placeholder {
   }
 
   .menu_li:hover {
-    color:rgb(92, 151, 218);
+    color: rgb(92, 151, 218);
   }
 
   .login > .menu_li > .li_text {
@@ -563,8 +623,6 @@ input:-moz-placeholder {
   .li_img {
     margin: 0;
   }
-
-
 
   .main {
     width: 940px;
@@ -580,14 +638,13 @@ input:-moz-placeholder {
     box-shadow: 0 3px 15px 3px rgba(0, 0, 0, 0.08);
   }
 
-  .login_text:focus {
+  .login_input:focus {
     outline-color: rgb(138, 207, 142);
   }
 
   .top_btn {
     bottom: 97px;
   }
-
 
   .footer {
     width: 980px;
@@ -597,5 +654,4 @@ input:-moz-placeholder {
   .hidden {
     display: none;
   }
-
 }

@@ -42,35 +42,38 @@
     <div class="join_wrapper">
       <div class="join">
           <h2 class="join_head">회원가입</h2>
-          <form class="join_form" method="post">
-              <label for="join_id" class="form_label">아이디 (ID)</label>
-              <input type="text" class="form_input" id="join_id" required minlength="4">
+          <form class="join_form" action="main.html" method="post">
+              <label for="userId" class="form_label">아이디 (ID)</label>
+              <input type="text" class="form_input" id="userId">
+              
+              <label for="userPassword1" class="form_label">비밀번호 (Password)</label>
+              <input type="password" class="form_input" id="userPassword1" name="password1">
 
-              <label for="join_password" class="form_label">비밀번호 (PASSWORD)</label>
-              <input type="password" class="form_input" id="join_password" required minlength="8">
+              <label for="userPassword2" class="form_label">비밀번호 확인 (Password Confirm)</label>
+              <input type="password" class="form_input" id="userPassword2" name="password2">
 
-              <label for="name" class="form_label">이름 (NAME)</label>
-              <input type="text" class="form_input" id="name" required>
+              <label for="name" class="form_label">이름 (Name)</label>
+              <input type="text" class="form_input" id="name">
 
               <fieldset class="birth">
-                  <legend class="form_label">생일 (BIRTHDAY)</legend>
+                  <legend class="form_label">생일 (Birthday)</legend>
                   <label for="month" class="month_label">월</label>
-                  <input type="number" class="form_input month" id="month" placeholder="월" min="1" max="12">
+                  <input type="number" class="form_input month" id="month" name="month" placeholder="월" min="1" max="12">
                   
                   <span class="birth_text">-</span>
 
                   <label for="date" class="date_label">일</label>
-                  <input type="number" class="form_input date" id="date" placeholder="일" min="1" max="31">
+                  <input type="number" class="form_input date" id="date" name="date" placeholder="일" min="1" max="31">
               </fieldset>
 
               <fieldset class="gender">
-                  <legend class="form_label">성별 (SEX)</legend>
-                  <input type="radio" name="gender" value="man" id="gender_man" class="man"><label for="gender_man" class="gender_man">남성</label>
-                  <input type="radio" name="gender" value="woman" id="gender_woman" class="woman"><label for="gender_woman" class="gender_woman">여성</label>
+                  <legend class="form_label">성별 (Sex)</legend>
+                  <input type="radio" name="gender" value="man" id="genderMan" class="man"><label for="genderMan" class="gender_man">남성</label>
+                  <input type="radio" name="gender" value="woman" id="genderWoman" class="woman"><label for="genderWoman" class="gender_woman">여성</label>
               </fieldset>
 
               <fieldset class="email">
-                <legend class="form_label">이메일 (E-MAIL)</legend>
+                <legend class="form_label">이메일 (E-mail)</legend>
                 <div class="email_box">
                     <label for="emailAddress"></label>
                     <input type="email" id="emailAddress" class="form_input mail" placeholder="E-MAIL ID"><span class="email_at">@</span>
@@ -85,17 +88,15 @@
             </fieldset>
 
               <fieldset class="phone_number">
-                  <legend class="form_label">휴대전화 (PHONE NUMBER)</legend>
+                  <legend class="form_label">휴대전화 (Phone Number)</legend>
                   <label for="phone"></label>
                   <input type="tel" placeholder="숫자만 입력해주세요." class="form_input tel" id="phone">
               </fieldset>
 
-              <button type="submit" class="join_btn">가입하기</button>
+              <button type="button" class="join_btn" id="joinBtn">가입하기</button>
           </form>
       </div>
   </div>
-
-
 
     <div class="top_btn">
       <a href="#header" class="top_link">
@@ -104,12 +105,6 @@
     </div>
 
   </main>
-
-
-
-
-
-
 
   <footer class="footer">
     <ul class="footer_menu">
@@ -123,68 +118,9 @@
     <p class="footer_copyright">
         COPYRIGHT © <span class="footer_copyright_text">WOOJINLEEdev</span> All Right Reserved.
     </p>
-</footer>
+  </footer>
 
-
-
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="js/myhomepage.js"></script>
-<script>
-  window.addEventListener("DOMContentLoaded", function () {
-      const $gnbMenu = document.querySelector(".gnb_menu");
-      const $searchLink = document.querySelector(".search_link");
-      const $searchInput = document.querySelector(".search_input")
-
-      
-      let $backBtn = document.querySelector(".search_back");
-      let $menu = document.querySelector(".header_nav");
-      let $search = document.querySelector(".search");
-
-      $gnbMenu.addEventListener("click", (e) => {
-          handleGnbMenu($gnbMenu);
-          openCloseMenu($menu);
-      });
-
-      $searchLink.addEventListener("click",(e) => {
-        openSearch($search, $searchLink, $searchInput);
-      });
-
-      $backBtn.addEventListener("click", (e) => {
-        closeSearch($search, $searchLink);
-      });
-
-  });
-
-
-  function handleGnbMenu($menu) {
-      if ($menu.classList.contains("active")) {
-          $menu.classList.remove("active");
-      } else {
-          $menu.classList.add("active");
-      }
-  }
-
-  function openCloseMenu($menu) {
-    if ($menu.classList.contains("hide")) {
-      $menu.classList.remove("hide");
-    } else {
-      $menu.classList.add("hide");
-    }
-  }
-
-
-  function openSearch($search, $searchLink, $searchInput) {
-    $search.classList.remove("hide");
-    $searchLink.classList.add("hidden");
-    $searchInput.focus();
-  }
-
-  function closeSearch($search, $searchLink) {
-    $search.classList.add("hide");
-    $searchLink.classList.remove("hidden");
-  }
-
-</script>
-
+  <script src="js/header.js"></script>
+  <script src="js/join.js"></script>
 </body>
 </html>
