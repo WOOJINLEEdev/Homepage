@@ -52,6 +52,6 @@ joinBtn.addEventListener("click", function () {
   } else {
     alert("회원가입이 완료되었습니다!");
     localStorage.setItem("userId", $userId.value);
-    location.href = "main.html";
+    location.href = "index.html";
   }
 });
