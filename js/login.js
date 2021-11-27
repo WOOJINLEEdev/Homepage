@@ -1,17 +1,14 @@
-let $userId = document.getElementById("userId");
-let $userPassword = document.getElementById("userPassword");
-
+const $userId = document.getElementById("userId");
+const $userPassword = document.getElementById("userPassword");
 const $logInButton = document.getElementById("logInButton");
 
 logInButton.addEventListener("click", () => {
-  console.log("??");
   logIn();
 });
 
 function logIn(event) {
-  if ($userId.value !== "ldrzl") {
+  if ($userId.value !== "WOOJINLEEdev") {
     alert("일치하는 회원 정보가 없습니다.");
-    console.log("로그인 실패");
     $userId.focus();
     event.preventDefault();
     return false;
