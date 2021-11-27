@@ -16,5 +16,5 @@
   - 로그인 페이지에서 회원가입 클릭시 회원가입 페이지로 이동.
   - 회원 가입 및 로그인 기능 없음.
 
-■ 사용방법
+■ 사용 방법
   - 오른쪽 하단 Environments > github-pages 클릭 > view deployment 클릭
