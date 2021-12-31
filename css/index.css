@@ -189,6 +189,7 @@ body {
   font-size: 0;
   text-align: center;
   border: 0;
+  cursor: pointer;
 }
 
 .search_wrapper {
@@ -205,6 +206,7 @@ body {
   height: 50px;
   border: none;
   padding: 0;
+  cursor: pointer;
 }
 
 .search {
@@ -232,6 +234,7 @@ body {
   height: 50px;
   padding: 0;
   border: none;
+  cursor: pointer;
 }
 
 input::-webkit-input-placeholder {
@@ -254,29 +257,10 @@ input:-moz-placeholder {
   font-size: 12px;
 }
 
-/* .search_btn {
-  display: inline-block;
-  border: none;
-  width: 10%;
-  background-color: #fff;
-  height: 50px;
-  padding: 0;
-  vertical-align: middle;
-}
-
-
-.search_back_btn {
-  display: inline-block;
-  border: none;
-  width: 10%;
-  background-color: #fff;
-  height: 50px;
-  padding: 0;
-  vertical-align: middle;
-} */
-
 .menu_link {
+  display: block;
   text-decoration: none;
+  color: #333;
 }
 
 .menu_li {
@@ -295,11 +279,6 @@ input:-moz-placeholder {
   margin-right: 10px;
 }
 
-.login {
-  box-shadow: 0 3px 15px 3px rgba(0, 0, 0, 0.08);
-}
-
-/* gnb_menu */
 .gnb_menu {
   display: inline-block;
   font-size: 1px;
@@ -714,12 +693,6 @@ input:-moz-placeholder {
     height: 70px;
   }
 
-  /* .search_img {
-    display: inline-block;
-    margin: 23px 0;
-    text-align: center;
-  } */
-
   input::-webkit-input-placeholder {
     font-size: 16px;
   }
@@ -756,12 +729,17 @@ input:-moz-placeholder {
     width: 100px;
   }
 
-  .menu_li:hover {
-    color: rgb(92, 151, 218);
+  .menu_li > .login > .li_text {
+    display: none;
   }
 
-  .login > .menu_li > .li_text {
-    display: none;
+  .menu_link {
+    width: 90px;
+    height: 70px;
+  }
+
+  .menu_link:hover {
+    color: rgb(92, 151, 218);
   }
 
   .li_img {

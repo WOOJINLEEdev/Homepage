@@ -3,10 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap"
-      rel="stylesheet"
+    <meta
+      name="description"
+      content="WOOJINLEEdev 홈페이지의 회원 가입 페이지입니다."
     />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -28,6 +27,7 @@
           <input
             type="button"
             class="search_back"
+            aria-label="검색창 닫기"
             value=""
             name="search_back"
           />
@@ -41,34 +41,43 @@
             class="search_button"
             value=""
             name="search_button"
+            aria-label="검색 버튼"
           />
         </div>
 
-        <a href="#" class="search_link"></a>
-        <a href="#" class="gnb_menu"
-          ><span class="visually_hidden">gnb menu</span></a
-        >
+        <button type="button" class="search_link">
+          <span class="visually_hidden">검색</span>
+        </button>
+        <button type="button" class="gnb_menu" aria-label="메뉴 버튼">
+          <span class="visually_hidden">gnb menu</span>
+        </button>
       </div>
 
-      <nav class="header_nav hide" aria-label="header">
+      <nav class="header_nav hide" aria-label="메뉴">
         <ul class="nav_menu">
-          <a href="login.html" class="menu_link login"
-            ><li class="menu_li">
-              <img src="img/log-in.png" class="li_img" alt="" /><span
+          <li class="menu_li">
+            <a href="login.html" class="menu_link login" aria-label="로그인"
+              ><img src="img/log-in.png" class="li_img" alt="" /><span
                 class="li_text"
-                >마이페이지</span
-              >
-            </li></a
-          >
-          <a href="#" class="menu_link"
-            ><li class="menu_li"><span class="li_text">메뉴</span></li></a
-          >
-          <a href="#" class="menu_link"
-            ><li class="menu_li"><span class="li_text">공지사항</span></li></a
-          >
-          <a href="#" class="menu_link"
-            ><li class="menu_li"><span class="li_text">커뮤니티</span></li></a
-          >
+                >로그인</span
+              ></a
+            >
+          </li>
+          <li class="menu_li">
+            <a href="#header" class="menu_link"
+              ><span class="li_text">리스트</span></a
+            >
+          </li>
+          <li class="menu_li">
+            <a href="#news" class="menu_link"
+              ><span class="li_text">뉴스</span></a
+            >
+          </li>
+          <li class="menu_li">
+            <a href="#notice" class="menu_link"
+              ><span class="li_text">공지사항</span></a
+            >
+          </li>
         </ul>
       </nav>
     </header>
