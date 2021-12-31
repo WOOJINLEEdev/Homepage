@@ -633,6 +633,7 @@ input:-moz-placeholder {
 
   .main {
     width: 940px;
+    height: calc(100vh - 207px);
     margin: 0 auto;
   }
 
