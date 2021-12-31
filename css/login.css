@@ -344,7 +344,7 @@ input:-moz-placeholder {
 }
 
 .main {
-  height: 100%;
+  height: calc(100vh - 181px);
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.05);
 }
@@ -474,6 +474,10 @@ input:-moz-placeholder {
     height: 60px;
   }
 
+  .header_search_gnb_wrap {
+    height: 60px;
+  }
+
   .search_link {
     width: 60px;
     height: 60px;
@@ -521,7 +525,7 @@ input:-moz-placeholder {
   }
 
   .main {
-    height: 800px;
+    height: calc(100vh - 191px);
   }
 
   .login_fieldset {
@@ -543,7 +547,6 @@ input:-moz-placeholder {
     width: 150px;
     height: 70px;
     margin-right: 78px;
-    /* margin-right: 176px; */
   }
 
   .header_search_gnb_wrap {

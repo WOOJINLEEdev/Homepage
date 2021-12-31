@@ -584,6 +584,10 @@ input:-moz-placeholder {
     height: 60px;
   }
 
+  .header_search_gnb_wrap {
+    height: 60px;
+  }
+
   .search_link {
     width: 60px;
     height: 60px;
@@ -658,7 +662,6 @@ input:-moz-placeholder {
     width: 150px;
     height: 70px;
     margin-right: 78px;
-    /* margin-right: 176px; */
   }
 
   .header_search_gnb_wrap {
